@@ -1,0 +1,22 @@
+A crude version of Remote Procedure Call
+
+1. The client requests from the binder the server identfier (IP address or hostname) and port number of a server capable of handling the request. The client side marshals the parameters into a request message, sends the request to the server, retrieves the result and returns.
+2. The server creates a connection socket that listens for client requests and, on receiving a request, identfies the desired server procedure, calls it with the appropriate parameters (extracted from the client request), and returns the results to the client. The server registers the server procedures with the binder and keeps a seperate TCP connection to the binder open so the binder knows it is still up.
+3. The binder takes registration requests from server processes and maintains a database of servers and associated procedures. It also services location requests from client processes, either returning the server identifer (IP address or hostname) and port information for a suitable server or indicating that no such server exists. Finally, since we may wish to terminate the entire system in a reasonably graceful fashion, the binder also handles terminate-request
+
+
+Call "make" to compile and get librpc.a and binder
+
+to get client executable
+1. g++ -L. client.o -lrpc -o client
+
+to get server executable
+2. g++ -L. server functions.o server function skels.o server.o -lrpc -o server
+
+Note: 
+1. client1 and server are samples
+2. all .o files from above need to be compiled by user
+
+assumption: server and client will not accidentely crash.
+
+
